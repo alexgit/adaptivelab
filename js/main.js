@@ -1,4 +1,4 @@
-require(['jquery', 'vendor/knockout'], function($, ko) {
+require(['jquery', 'vendor/knockout', 'tweetfilter'], function($, ko, TweetFilter) {
 
   /* adaptive lab's endpoint. makes the call to their server and returns the promise (deferred). */
   var adaptiveLab = {
@@ -36,30 +36,6 @@ require(['jquery', 'vendor/knockout'], function($, ko) {
   function createTweet(tweetObj) {
     return new Tweet(tweetObj.user_handle, tweetObj.created_at, tweetObj.sentiment, tweetObj.message);
   }
-
-  function TweetFilter() {
-    this.tweets = [];
-
-    this.filterTweets = function(newTweets) {
-      var results = [],
-        self = this;
-
-      ko.utils.arrayForEach(newTweets, function(newTweet) {
-        var found = !!ko.utils.arrayFirst(tweets, function(t) {
-          return t.id === newTweet.id;
-        });
-
-        if(!found) {
-          self.tweets.unshift(newTweet);
-          results.push(newTweet);
-        } else {
-          console.log('filtered out duplicate: ' + newTweet);
-        }
-      });
-
-      return results;
-    };
-  };
 
   var filter = new TweetFilter();
 

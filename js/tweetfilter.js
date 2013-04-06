@@ -1,4 +1,4 @@
-define('TweetFilter', ['vendor/knockout'], function(ko) {
+define(['vendor/knockout'], function(ko) {
 
   return function TweetFilter() {
     this.tweets = [];
@@ -22,6 +22,6 @@ define('TweetFilter', ['vendor/knockout'], function(ko) {
 
       return results;
     };
-  }
+  };
 
 });

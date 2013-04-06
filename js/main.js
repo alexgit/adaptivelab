@@ -1,4 +1,4 @@
-require(['jquery', 'vendor/knockout', 'tweetfilter'], function($, ko, TweetFilter) {
+require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, ko, TweetFilter) {
 
   /* adaptive lab's endpoint. makes the call to their server and returns the promise (deferred). */
   var adaptiveLab = {
@@ -47,6 +47,11 @@ require(['jquery', 'vendor/knockout', 'tweetfilter'], function($, ko, TweetFilte
       adaptiveLab.fetchNewTweets()
       .done(function(response) {
         var filtered = filter.filterTweets(response);
+
+        if(!filtered.length) {
+          noty({text: "No new tweets"});
+        }
+
         var tweets = ko.utils.arrayMap(filtered, createTweet);
 
         ko.utils.arrayForEach(tweets, function(t) {
@@ -54,7 +59,7 @@ require(['jquery', 'vendor/knockout', 'tweetfilter'], function($, ko, TweetFilte
         });
       })
       .fail(function(error) {
-        console.log('oops: ' + error); //todo: display friendly message
+        noty({text: 'Sorry, can\'t get your tweets now. Try again a little later.', type: 'error'});
       })
       .always(function() {
         setTimeout(function() {
@@ -71,6 +76,8 @@ require(['jquery', 'vendor/knockout', 'tweetfilter'], function($, ko, TweetFilte
   viewModel.loadButtonText = ko.computed(function() {
     return this.loading() ? 'Loading...' : 'MOAR';
   }, viewModel);
+
+
 
   $(function() {
     ko.applyBindings(viewModel, document.getElementById('container'));

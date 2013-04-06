@@ -25,7 +25,7 @@
 
             <div id="tweets-container">
 
-                <div id="load-more-button">
+                <div id="load-more-button" data-bind="click: fetchNew">
                     MOAR
                 </div>
 
@@ -40,6 +40,7 @@
     </body>
 </html>
 
+<!-- Template rendered for every tweet. Uses knockout's default templating engine (via the data-bind attributes) -->
 <script id="tweet-template" type="text/html">
     <div class="tweet">
         <div class="head clearfix">

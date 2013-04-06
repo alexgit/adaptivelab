@@ -1,6 +1,7 @@
 require(['jquery', 'vendor/knockout'], function($, ko) {
 
-  var resource = {
+  /* adaptive lab's endpoint. makes the call to their server and returns the promise (deferred). */
+  var adaptiveLab = {
     url: 'http://adaptive-test-api.herokuapp.com/tweets.json',
     fetchNewTweets: function() {
       return $.ajax({
@@ -10,44 +11,92 @@ require(['jquery', 'vendor/knockout'], function($, ko) {
     }
   };
 
+  var sentimentMap = {
+    visualise: function(sentiment) {
+      if(sentiment < -0.5) {
+        return ':(';
+      } else if(sentiment < 0.5) {
+        return ':|';
+      } else {
+        return ':)';
+      }
+    }
+  };
+
   function Tweet(handle, time, sentiment, message) {
+    var date = new Date(time);
+
     this.handle = handle;
-    this.time = time;
-    this.sentiment = sentiment;
+    this.time = date.getHours() + ':' + date.getMinutes();
+    this.sentiment = sentimentMap.visualise(sentiment);
     this.message = message;
-    this.formattedTime = time; //todo: do formatting
+    this.formattedTime = this.time; //todo: do formatting
   }
 
   function createTweet(tweetObj) {
     return new Tweet(tweetObj.user_handle, tweetObj.created_at, tweetObj.sentiment, tweetObj.message);
   }
 
+  function TweetFilter() {
+    this.tweets = [];
+
+    this.filterTweets = function(newTweets) {
+      var results = [],
+        self = this;
+
+      ko.utils.arrayForEach(newTweets, function(newTweet) {
+        var found = !!ko.utils.arrayFirst(tweets, function(t) {
+          return t.id === newTweet.id;
+        });
+
+        if(!found) {
+          self.tweets.unshift(newTweet);
+          results.push(newTweet);
+        } else {
+          console.log('filtered out duplicate: ' + newTweet);
+        }
+      });
+
+      return results;
+    };
+  };
+
+  var filter = new TweetFilter();
+
   var viewModel = {
-    tweets: ko.observableArray()
+    loading: ko.observable(false),
+    tweets: ko.observableArray(),
+    fetchNew: function() {
+      this.loading(true);
+      adaptiveLab.fetchNewTweets()
+      .done(function(response) {
+
+        var filtered = filter.filterTweets(response);
+
+        var tweets = ko.utils.arrayMap(filtered, createTweet);
+
+        ko.utils.arrayForEach(tweets, function(t) {
+          viewModel.tweets.unshift(t);
+        });
+      })
+      .fail(function(error) {
+        console.log('oops: ' + error); //todo: display friendly message
+      })
+      .always(function() {
+        viewModel.loading(false);
+      });
+    }
   };
 
   viewModel.hasNoTweets = ko.computed(function() {
     return this.tweets().length === 0;
   }, viewModel);
 
-
   $(function() {
 
     ko.applyBindings(viewModel, document.getElementById('container'));
 
-    resource.fetchNewTweets()
-      .done(function(response) {
-        var tweets = ko.utils.arrayMap(response, createTweet);
+    viewModel.fetchNew();
 
-        ko.utils.arrayForEach(tweets, function(t) {
-          viewModel.tweets.push(t);
-        });
-      })
-      .fail(function(error) {
-        alert('oops: ' + error);
-      });
   });
-
-
-
 });

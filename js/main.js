@@ -1,6 +1,6 @@
 require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, ko, TweetFilter) {
 
-  /* adaptive lab's endpoint. makes the call to their server and returns the promise (deferred). */
+  /* adaptive lab's endpoint. makes the call to their server and returns the promise/deferred. */
   var adaptiveLab = {
     url: 'http://adaptive-test-api.herokuapp.com/tweets.json',
     fetchNewTweets: function() {
@@ -11,6 +11,7 @@ require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, 
     }
   };
 
+  /* could pull this out into it's own component later */
   var sentimentMap = {
     visualise: function(sentiment) {
       if(sentiment < -0.5) {
@@ -29,10 +30,11 @@ require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, 
     this.dateCreated = date;
     this.id = id;
     this.handle = handle;
-    this.time = date.getHours() + ':' + date.getMinutes();
+    this.time = date.getDay() + '/' + date.getMonth() + '/' + date.getFullYear() +
+                  ' ' + date.getHours() + ':' + date.getMinutes();
     this.visualSentiment = sentimentMap.visualise(sentiment);
     this.message = message;
-    this.formattedTime = this.time; //todo: do formatting
+    this.formattedTime = this.time; //todo: do proper formatting (date.js ?)
     this.sentiment = sentiment;
   }
 
@@ -46,6 +48,7 @@ require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, 
     );
   }
 
+  /* removes duplicate tweets */
   var filter = new TweetFilter();
 
   var viewModel = {
@@ -67,27 +70,26 @@ require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, 
     },
     fetchNew: function() {
       this.loading(true);
-      adaptiveLab.fetchNewTweets()
-      .done(function(response) {
-        var filtered = filter.filterTweets(response);
-        if(!filtered.length) {
-          noty({text: "No new tweets"});
-          return;
-        }
 
-        var tweets = ko.utils.arrayMap(filtered, createTweet);
-        ko.utils.arrayForEach(tweets, function(t) {
-          viewModel.tweets.unshift(t);
-        });
-      })
-      .fail(function(error) {
-        noty({text: 'Sorry, can\'t get your tweets now. Try again a little later.', type: 'error'});
-      })
-      .always(function() {
-        setTimeout(function() {
+      adaptiveLab.fetchNewTweets()
+        .done(function(response) {
+          var filtered = filter.filterTweets(response);
+          if(!filtered.length) {
+            noty({text: "No new tweets"});
+            return;
+          }
+
+          var tweets = ko.utils.arrayMap(filtered, createTweet);
+          ko.utils.arrayForEach(tweets, function(t) {
+            viewModel.tweets.unshift(t);
+          });
+        })
+        .fail(function(error) {
+          noty({text: 'Sorry, can\'t get your tweets now. Try again a little later.', type: 'error'});
+        })
+        .always(function() {
           viewModel.loading(false);
-        }, 300);
-      });
+        });
     }
   };
 

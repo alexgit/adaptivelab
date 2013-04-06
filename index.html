@@ -22,17 +22,18 @@
         <![endif]-->
 
         <div id="container">
+            <div id="tweets-container" class="clearfix">
+                <div id="load-more-button" data-bind="click: fetchNew, text: loadButtonText, css: { 'active' : !loading() }"></div>
 
-            <div id="tweets-container">
+                <div data-bind="visible: hasNoTweets">no tweets</div>
 
-                <div id="load-more-button" data-bind="click: fetchNew, text: loadButtonText, css: { 'active' : !loading() }">
+                <div id="sort-options" class="clearfix">
+                    <a href="#" class="sorting-link" data-sort-by="sentiment" data-bind="css: { 'asc': sortOrder() == 'asc', 'desc': sortOrder() == 'desc', 'active': sortBy() == 'sentiment' }">sentiment</a>
+                    <a href="#" class="sorting-link" data-sort-by="dateCreated" data-bind="css: { 'asc': sortOrder() == 'asc', 'desc': sortOrder() == 'desc', 'active': sortBy() == 'dateCreated' }">date created</a>
                 </div>
 
-            <div data-bind="visible: hasNoTweets">no tweets</div>
-
-            <div id="tweets" data-bind="template: { name: 'tweet-template', foreach: tweets }">
+                <div id="tweets" data-bind="template: { name: 'tweet-template', foreach: sortedTweets }">
             </div>
-
         </div>
 
         <script data-main="js/main" src="js/require-jquery.js"></script>
@@ -52,7 +53,7 @@
             </div>
             <div class="time-and-sentiment">
                 <span class="time" data-bind="text: formattedTime"></span>
-                <span class="sentiment" data-bind="text: sentiment">:)</span>
+                <span class="sentiment" data-bind="text: visualSentiment">:)</span>
             </div>
         </div>
         <div class="message" data-bind="text: message">

@@ -134,7 +134,7 @@ div.tweet {
 div.tweet div.head {
     margin-bottom: 10px;
     padding-bottom: 5px;
-    border-bottom: 2px solid black;
+    border-bottom: 1px solid grey;
 }
 
 div.tweet .head div {
@@ -181,6 +181,23 @@ div.tweet .message {
     cursor: pointer;
     background-color: black;
     color: white;
+}
+
+#sort-options a {
+    float: right;
+    font-size: small;
+    color: grey;
+    margin-left: 15px;
+    padding-right: 5px;
+    margin-bottom: 5px;
+}
+
+#sort-options a.asc.active:before {
+    content: '< ';
+}
+
+#sort-options a.desc.active:before {
+    content: '> ';
 }
 
 input,

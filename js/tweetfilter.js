@@ -8,7 +8,7 @@ define(['vendor/knockout'], function(ko) {
         self = this;
 
       ko.utils.arrayForEach(newTweets, function(newTweet) {
-        var found = !!ko.utils.arrayFirst(tweets, function(t) {
+        var found = !!ko.utils.arrayFirst(self.tweets, function(t) {
           return t.id === newTweet.id;
         });
 

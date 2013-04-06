@@ -175,7 +175,7 @@ div.tweet .message {
     -webkit-border-radius: 5px;
 }
 
-#load-more-button:hover {
+#load-more-button.active:hover {
     cursor: pointer;
     background-color: black;
     color: white;

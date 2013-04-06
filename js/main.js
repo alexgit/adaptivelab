@@ -46,9 +46,7 @@ require(['jquery', 'vendor/knockout', 'tweetfilter'], function($, ko, TweetFilte
       this.loading(true);
       adaptiveLab.fetchNewTweets()
       .done(function(response) {
-
         var filtered = filter.filterTweets(response);
-
         var tweets = ko.utils.arrayMap(filtered, createTweet);
 
         ko.utils.arrayForEach(tweets, function(t) {
@@ -59,7 +57,9 @@ require(['jquery', 'vendor/knockout', 'tweetfilter'], function($, ko, TweetFilte
         console.log('oops: ' + error); //todo: display friendly message
       })
       .always(function() {
-        viewModel.loading(false);
+        setTimeout(function() {
+          viewModel.loading(false);
+        }, 300);
       });
     }
   };
@@ -68,11 +68,12 @@ require(['jquery', 'vendor/knockout', 'tweetfilter'], function($, ko, TweetFilte
     return this.tweets().length === 0;
   }, viewModel);
 
+  viewModel.loadButtonText = ko.computed(function() {
+    return this.loading() ? 'Loading...' : 'MOAR';
+  }, viewModel);
+
   $(function() {
-
     ko.applyBindings(viewModel, document.getElementById('container'));
-
     viewModel.fetchNew();
-
   });
 });

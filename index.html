@@ -25,8 +25,7 @@
 
             <div id="tweets-container">
 
-                <div id="load-more-button" data-bind="click: fetchNew">
-                    MOAR
+                <div id="load-more-button" data-bind="click: fetchNew, text: loadButtonText, css: { 'active' : !loading() }">
                 </div>
 
             <div data-bind="visible: hasNoTweets">no tweets</div>

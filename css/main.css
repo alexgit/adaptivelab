@@ -104,12 +104,73 @@ body {
     margin-left: auto;
     margin-right: auto;
 
+    text-align: center;
+    overflow: auto;
+
     border: 1px solid black;
     height: 1000px;
 }
 
-#controls {
+#tweets-container {
+    max-width: 450px;
+    min-width: 340px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+}
+
+div.tweet {
+    border: 1px solid black;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+div.tweet div.head {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid black;
+}
+
+div.tweet .head div {
+    display: inline-block;
+}
+
+div.tweet .head div.handle {
+    width: 35%;
+    float: left;
     text-align: left;
+}
+
+div.tweet .head div.time-and-sentiment {
+    width: 65%;
+    float: right;
+    text-align: right;
+}
+
+div.tweet span {
+    display: inline-block;
+}
+
+div.tweet span.time {
+    margin-right: 20px;
+}
+
+div.tweet .text {
+    text-align: center;
+}
+
+
+#load-more-button {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: 1px solid black;
+    margin-bottom: 20px;
+}
+
+#load-more-button:hover {
+    cursor: pointer;
+    background-color: black;
+    color: white;
 }
 
 input,

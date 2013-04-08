@@ -62,7 +62,7 @@ require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, 
   var viewModel = {
     loading: ko.observable(false),
     tweets: ko.observableArray(),
-    sortBy: ko.observable('id'),
+    sortBy: ko.observable(),
     sortOrder: ko.observable('desc'),
 
     flipSortOrder: function() {
@@ -114,6 +114,10 @@ require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, 
     var order = this.sortOrder();
     var sortBy = this.sortBy();
 
+    if(!sortBy) {
+      return this.tweets();
+    }
+
     if(order === 'asc') {
       return this.tweets().sort(function(t1, t2) {
         return compare(t1[sortBy], t2[sortBy]);
@@ -123,7 +127,6 @@ require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, 
         return compare(t2[sortBy], t1[sortBy]);
       });
     }
-
   }, viewModel);
 
   var container = $('#container');

@@ -99,7 +99,7 @@ body {
 }
 
 #container {
-    min-width: 360px;
+    min-width: 300px;
     max-width: 850px;
     margin-left: auto;
     margin-right: auto;
@@ -110,7 +110,7 @@ body {
 
 #tweets-container {
     max-width: 450px;
-    min-width: 340px;
+    min-width: 300px;
     margin-left: auto;
     margin-right: auto;
     padding-top: 50px;
@@ -148,6 +148,9 @@ div.tweet .head div.time-and-sentiment {
     width: 65%;
     float: right;
     text-align: right;
+
+    font-size: small;
+    color: grey;
 }
 
 div.tweet span {
@@ -161,7 +164,6 @@ div.tweet span.time {
 div.tweet .message {
     text-align: center;
 }
-
 
 #load-more-button {
     padding-top: 20px;

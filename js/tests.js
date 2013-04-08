@@ -52,7 +52,7 @@ define(['jasmine', 'jasmine-html', 'tweetfilter'], function(jasmine, jh, TweetFi
       expect(result.length).toEqual(1);
     });
 
-    it('return the same number of tweets if no duplicates', function() {
+    it('should return the same number of tweets if no duplicates', function() {
       var firstBatch = [
         { id: 123, message: 'ahoi' },
         { id: 125, message: 'bleh' },
@@ -71,6 +71,27 @@ define(['jasmine', 'jasmine-html', 'tweetfilter'], function(jasmine, jh, TweetFi
 
       expect(result.length).toEqual(3);
     });
+
+    it('return an empty array when all are duplicates', function() {
+      var firstBatch = [
+        { id: 123, message: 'ahoi' },
+        { id: 125, message: 'bleh' },
+        { id: 126, message: 'asdfasdf' }
+      ];
+
+      filter.filterTweets(firstBatch);
+
+      var secondBatch = [
+        { id: 123, message: 'ahoi' },
+        { id: 125, message: 'bleh' },
+        { id: 126, message: 'asdfasdf' }
+      ];
+
+      var result = filter.filterTweets(secondBatch);
+
+      expect(result.length).toEqual(0);
+    });
+
   });
 
   $(function(){

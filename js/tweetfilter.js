@@ -1,24 +1,16 @@
-define(['vendor/knockout'], function(ko) {
+define(function() {
 
   return function TweetFilter() {
-    this.tweets = [];
+    var seen = {};
 
     this.filterTweets = function(newTweets) {
-      var results = [],
-        self = this;
-
-      ko.utils.arrayForEach(newTweets, function(newTweet) {
-        var found = !!ko.utils.arrayFirst(self.tweets, function(t) {
-          return t.id === newTweet.id;
-        });
-
-        if(!found) {
-          self.tweets.unshift(newTweet);
-          results.push(newTweet);
-        } else {
-          console.log('filtered out duplicate: ' + newTweet);
+      var results = [];
+      for(var i = 0, j = newTweets.length; i < j; i++) {
+        if(!(newTweets[i].id in seen)) {
+          seen[newTweets[i].id] = true;
+          results.push(newTweets[i]);
         }
-      });
+      }
 
       return results;
     };

@@ -24,6 +24,14 @@ require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, 
     }
   };
 
+  var compare = function(a, b) {
+    if(a.localeCompare) {
+      return a.localeCompare(b);
+    } else {
+      return a - b;
+    }
+  };
+
   function Tweet(id, handle, time, sentiment, message) {
     var date = new Date(time);
 
@@ -80,6 +88,7 @@ require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, 
           }
 
           var tweets = ko.utils.arrayMap(filtered, createTweet);
+
           ko.utils.arrayForEach(tweets, function(t) {
             viewModel.tweets.unshift(t);
           });
@@ -105,21 +114,13 @@ require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, 
     var order = this.sortOrder();
     var sortBy = this.sortBy();
 
-    var sortFunc = function(a, b) {
-      if(a.localeCompare) {
-        return a.localeCompare(b);
-      } else {
-        return a - b;
-      }
-    };
-
     if(order === 'asc') {
       return this.tweets().sort(function(t1, t2) {
-        return sortFunc(t1[sortBy], t2[sortBy]);
+        return compare(t1[sortBy], t2[sortBy]);
       });
     } else {
       return this.tweets().sort(function(t1, t2) {
-        return sortFunc(t2[sortBy], t1[sortBy]);
+        return compare(t2[sortBy], t1[sortBy]);
       });
     }
 

@@ -25,7 +25,7 @@
             <div id="tweets-container" class="clearfix">
                 <div id="load-more-button" data-bind="click: fetchNew, text: loadButtonText, css: { 'active' : !loading() }"></div>
 
-                <div data-bind="visible: hasNoTweets">no tweets</div>
+                <div data-bind="visible: !loading() && hasNoTweets()">no tweets</div>
 
                 <div id="sort-options" class="clearfix" data-bind="visible: !hasNoTweets()">
                     <a href="#" class="sorting-link" data-sort-by="sentiment" data-bind="css: { 'asc': sortOrder() == 'asc', 'desc': sortOrder() == 'desc', 'active': sortBy() == 'sentiment' }">sentiment</a>

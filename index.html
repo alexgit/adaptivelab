@@ -32,11 +32,11 @@
                     <a href="#" class="sorting-link" data-sort-by="dateCreated" data-bind="css: { 'asc': sortOrder() == 'asc', 'desc': sortOrder() == 'desc', 'active': sortBy() == 'dateCreated' }">date created</a>
                 </div>
 
-                <div id="tweets" data-bind="template: { name: 'tweet-template', foreach: sortedTweets }">
+                <div id="tweets" data-bind="template: { name: 'tweet-template', foreach: sortedTweets }"></div>
             </div>
         </div>
 
-        <script data-main="js/main" src="js/require-jquery.js"></script>
+        <script data-main="js/main" src="js/vendor/require-jquery.js"></script>
         <script src="js/vendor/noty/jquery.noty.js"></script>
         <script src="js/vendor/noty/layouts/top.js"></script>
         <script src="js/vendor/noty/themes/default.js"></script>

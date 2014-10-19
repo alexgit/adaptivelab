@@ -107,7 +107,7 @@ require(['jquery', 'vendor/knockout', 'tweetfilter', 'notyconfig'], function($, 
   }, viewModel);
 
   viewModel.loadButtonText = ko.computed(function() {
-    return this.loading() ? 'Loading...' : 'MOAR';
+    return this.loading() ? 'Loading...' : 'MORE';
   }, viewModel);
 
   viewModel.sortedTweets = ko.computed(function() {
